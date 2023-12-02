@@ -4,7 +4,7 @@ namespace GedAcademia
 {
     public class Cliente : Pessoa
     {
-        public double Altura { get; set; }
-        public double Peso { get; set; }
+        public int Altura { get; set; }
+        public int Peso { get; set; }
     }
 }

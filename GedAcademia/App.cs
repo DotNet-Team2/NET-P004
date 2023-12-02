@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace GedAcademia
 {
-    public static class GestaoClientesTreinadores
+    public static class GestaoDaAcademia
     {
-        public static List<Cliente> ListaDeClientes { get; } = new List<Cliente>();
-        public static List<Treinador> ListaDeTreinadores { get; } = new List<Treinador>();
+        private static List<Cliente> ListaDeClientes { get; } = new List<Cliente>();
+        private static List<Treinador> ListaDeTreinadores { get; } = new List<Treinador>();
 
-        public static void CadastrarCliente((string? Nome, string? CPF, DateTime DataNasc, double Altura, double Peso) clienteInfo)
+        public static void CadastrarCliente((string? Nome, string? CPF, DateTime DataNasc, int Altura, int Peso) clienteInfo)
         {
             Cliente cliente = new Cliente
             {
@@ -22,6 +22,27 @@ namespace GedAcademia
             ListaDeClientes.Add(cliente);
         }
 
+        public static (string?, string?, DateTime, int, int) CapturarDadosCliente()
+        {
+            Console.WriteLine("Cadastro de Cliente:");
+            Console.Write("Nome do Cliente: ");
+            string? nome = Console.ReadLine();
+
+            Console.Write("CPF do Cliente: ");
+            string? cpf = Console.ReadLine();
+
+            Console.Write("Data de Nascimento do Cliente (Formato: dd/MM/yyyy): ");
+            DateTime dataNasc = DateTime.Parse(Console.ReadLine());
+
+            Console.Write("Altura do Cliente (em centímetros): ");
+            int altura = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Peso do Cliente: ");
+            int peso = Convert.ToInt32(Console.ReadLine());
+
+            return (nome, cpf, dataNasc, altura, peso);
+        }
+
         public static void CadastrarTreinador((string? Nome, DateTime DataNasc, string? CPF, string? CREF) treinadorInfo)
         {
             Treinador treinador = new Treinador
@@ -33,6 +54,24 @@ namespace GedAcademia
             };
 
             ListaDeTreinadores.Add(treinador);
+        }
+
+        public static (string?, DateTime, string?, string?) CapturarDadosTreinador()
+        {
+            Console.WriteLine("Cadastro de Treinador:");
+            Console.Write("Nome do Treinador: ");
+            string? nome = Console.ReadLine();
+
+            Console.Write("Data de Nascimento do Treinador (Formato: dd/MM/yyyy): ");
+            DateTime dataNasc = DateTime.Parse(Console.ReadLine());
+
+            Console.Write("CPF do Treinador: ");
+            string? cpf = Console.ReadLine();
+
+            Console.Write("CREF do Treinador: ");
+            string? cref = Console.ReadLine();
+
+            return (nome, dataNasc, cpf, cref);
         }
 
         public static void RelIdadeEntreMinMax(int idadeMinima, int idadeMaxima)
@@ -133,7 +172,7 @@ namespace GedAcademia
         {
             Console.WriteLine("\nClientes Cadastrados em Ordem Alfabética:");
 
-            var clientesOrdenados = GestaoClientesTreinadores.ListaDeClientes.OrderBy(cliente => cliente.Nome);
+            var clientesOrdenados = GestaoDaAcademia.ListaDeClientes.OrderBy(cliente => cliente.Nome);
 
             foreach (var cliente in clientesOrdenados)
             {

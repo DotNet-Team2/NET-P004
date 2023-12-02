@@ -2,7 +2,7 @@ using System;
 
 namespace GedAcademia
 {
-    public class Treino : Exercicio
+    public class Treino 
     {
         public string? Tipo { get; set; }
         public string? Objetivo { get; set; }
