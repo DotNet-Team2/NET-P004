@@ -1,10 +1,8 @@
-using System;
+namespace GedAcademia;
 
-namespace GedAcademia
+public class Cliente : Pessoa
 {
-    public class Cliente : Pessoa
-    {
-        public int Altura { get; set; }
-        public int Peso { get; set; }
-    }
+    public int AlturaCm { get; set; }
+    public int PesoKg { get; set; }
+    public List<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
 }

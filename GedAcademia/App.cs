@@ -1,248 +1,672 @@
-using System;
-using System.Collections.Generic;
+using System.Globalization;
 
-namespace GedAcademia
+namespace GedAcademia;
+public class GestaoDaAcademia
 {
-    public static class GestaoDaAcademia
+    public static List<Treinador> treinadores = new List<Treinador>();
+    public static List<Cliente> clientes = new List<Cliente>();
+    public static List<Treino> treinos = new List<Treino>();
+    public List<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
+    private static List<string> crefsUtilizados = new List<string>();
+
+    private static bool CREFUnico(string cref)
     {
-        private static List<Cliente> ListaDeClientes { get; } = new List<Cliente>();
-        private static List<Treinador> ListaDeTreinadores { get; } = new List<Treinador>();
+        return !crefsUtilizados.Contains(cref);
+    }
 
-        public static void CadastrarCliente((string? Nome, string? CPF, DateTime DataNasc, int Altura, int Peso) clienteInfo)
+    public static void AdicionarTreinador()
+    {
+        Console.Write("Digite o nome do treinador: ");
+        string? nomeTreinador = Console.ReadLine();
+
+        DateTime dataNascimento;
+        while (true)
         {
-            Cliente cliente = new Cliente
+            Console.Write("Digite a data de nascimento (DD/MM/YYYY): ");
+            string? dataNascTreinador = Console.ReadLine();
+
+            if (DateTime.TryParse(dataNascTreinador, out dataNascimento))
             {
-                Nome = clienteInfo.Nome,
-                CPF = clienteInfo.CPF,
-                DataNasc = clienteInfo.DataNasc,
-                Altura = clienteInfo.Altura,
-                Peso = clienteInfo.Peso
-            };
-
-            ListaDeClientes.Add(cliente);
+                break;
+            }
+            else
+            {
+                Console.WriteLine("O formato da data é inválido. Tente novamente.");
+            }
         }
 
-        public static (string?, string?, DateTime, int, int) CapturarDadosCliente()
+        string? cpfTreinador = null;
+
+        while (true)
         {
-            Console.WriteLine("Cadastro de Cliente:");
-            Console.Write("Nome do Cliente: ");
-            string? nome = Console.ReadLine();
+            Console.Write("Digite o CPF: ");
+            string cpfInput = Console.ReadLine();
 
-            Console.Write("CPF do Cliente: ");
-            string? cpf = Console.ReadLine();
+            // Remover caracteres não numéricos do CPF
+            cpfTreinador = new string(cpfInput.Where(char.IsDigit).ToArray());
 
-            Console.Write("Data de Nascimento do Cliente (Formato: dd/MM/yyyy): ");
-            DateTime dataNasc = DateTime.Parse(Console.ReadLine());
-
-            Console.Write("Altura do Cliente (em centímetros): ");
-            int altura = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("Peso do Cliente: ");
-            int peso = Convert.ToInt32(Console.ReadLine());
-
-            return (nome, cpf, dataNasc, altura, peso);
+            // Validar o CPF
+            if (Pessoa.ValidarCPF(cpfTreinador))
+            {
+                // CPF válido, sair do loop
+                break;
+            }
+            else
+            {
+                Console.WriteLine("CPF inválido. Digite um CPF válido.");
+            }
         }
 
-        public static void CadastrarTreinador((string? Nome, DateTime DataNasc, string? CPF, string? CREF) treinadorInfo)
+        Console.Write("Digite o CREF: ");
+        string? crefTreinador = Console.ReadLine();
+
+        // Verificar se o CREF é único
+        if (CREFUnico(crefTreinador))
+        {
+            crefsUtilizados.Add(crefTreinador);
+        }
+        else
+        {
+            Console.WriteLine("CREF já utilizado. Digite um CREF único.");
+            return;
+        }
+
+        try
         {
             Treinador treinador = new Treinador
             {
-                Nome = treinadorInfo.Nome,
-                DataNasc = treinadorInfo.DataNasc,
-                CPF = treinadorInfo.CPF,
-                CREF = treinadorInfo.CREF
+                Nome = nomeTreinador,
+                DataNascimento = dataNascimento,
+                CPF = cpfTreinador,
+                CREF = crefTreinador
             };
 
-            ListaDeTreinadores.Add(treinador);
+            treinadores.Add(treinador);
+            Console.WriteLine("Treinador adicionado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ocorreu um erro: {ex.Message}");
         }
 
-        public static (string?, DateTime, string?, string?) CapturarDadosTreinador()
+    }
+
+    public static void AdicionarCliente()
+    {
+        Console.Write("Digite o nome do cliente: ");
+        string? nomeCliente = Console.ReadLine();
+
+        DateTime dataNascimento;
+        while (true)
         {
-            Console.WriteLine("Cadastro de Treinador:");
-            Console.Write("Nome do Treinador: ");
-            string? nome = Console.ReadLine();
+            Console.Write("Digite a data de nascimento (DD/MM/YYYY): ");
+            string? dataNascCliente = Console.ReadLine();
 
-            Console.Write("Data de Nascimento do Treinador (Formato: dd/MM/yyyy): ");
-            DateTime dataNasc = DateTime.Parse(Console.ReadLine());
-
-            Console.Write("CPF do Treinador: ");
-            string? cpf = Console.ReadLine();
-
-            Console.Write("CREF do Treinador: ");
-            string? cref = Console.ReadLine();
-
-            return (nome, dataNasc, cpf, cref);
-        }
-
-        public static void RelIdadeEntreMinMax(int idadeMinima, int idadeMaxima)
-        {
-            // Obtém a data atual
-            DateTime dataAtual = DateTime.Now;
-
-            // Filtra os treinadores com idade entre os valores fornecidos
-            var treinadoresEntreMinMax = ListaDeTreinadores.Where(treinador =>
+            if (DateTime.TryParse(dataNascCliente, out dataNascimento))
             {
-                int idade = dataAtual.Year - treinador.DataNasc.Year;
+                break;
+            }
+            else
+            {
+                Console.WriteLine("O formato da data é inválido. Tente novamente.");
+            }
+        }
 
-                // Ajusta a idade se ainda não tiver completado o aniversário este ano
-                if (dataAtual.Month < treinador.DataNasc.Month || (dataAtual.Month == treinador.DataNasc.Month && dataAtual.Day < treinador.DataNasc.Day))
+        string? cpfCliente = null;
+
+        while (true)
+        {
+            Console.Write("Digite o CPF: ");
+            string cpfInput = Console.ReadLine();
+
+            // Remover caracteres não numéricos do CPF
+            cpfCliente = new string(cpfInput.Where(char.IsDigit).ToArray());
+
+            // Validar o CPF
+            if (Pessoa.ValidarCPF(cpfCliente))
+            {
+                // CPF válido, sair do loop
+                break;
+            }
+            else
+            {
+                Console.WriteLine("CPF inválido. Digite um CPF válido.");
+            }
+        }
+
+        Console.Write("Digite a altura do cliente em cm: ");
+        int alturaCliente = Int32.Parse(Console.ReadLine());
+
+        Console.Write("Digite o peso do cliente em kg: ");
+        int pesoCliente = Int32.Parse(Console.ReadLine());
+
+        try
+        {
+            Cliente cliente = new Cliente
+            {
+                Nome = nomeCliente,
+                DataNascimento = dataNascimento,
+                CPF = cpfCliente,
+                AlturaCm = alturaCliente,
+                PesoKg = pesoCliente
+            };
+
+            clientes.Add(cliente);
+            Console.WriteLine("Cliente adicionado com sucesso!");
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("Formato de data inválido.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ocorreu um erro: {ex.Message}");
+        }
+    }
+
+    public static void ListarTreinadores()
+    {
+        Console.WriteLine("Lista de Treinadores:");
+        Console.WriteLine();
+        Console.WriteLine("{0,-35} {1,-20} {2,-20} {3,-15}", "Nome", "Data de Nascimento", "CPF", "CREF");
+        Console.WriteLine(new string('=', 100));
+
+        foreach (var treinador in treinadores)
+        {
+            Console.WriteLine("{0,-35} {1,-20} {2,-20} {3,-15}", treinador.Nome, treinador.DataNascimento.ToString("dd/MM/yyyy"), treinador.CPF, treinador.CREF);
+        }
+        Console.WriteLine(new string('.', 100));
+    }
+
+    public static void ListarClientes()
+    {
+        Console.WriteLine("Lista de Clientes:");
+        Console.WriteLine();
+        Console.WriteLine("{0,-35} {1,-20} {2,-20} {3,-20} {4,-15}", "Nome", "Data de Nascimento", "CPF", "Altura(cm)", "Peso(Kg)");
+        Console.WriteLine(new string('=', 100));
+
+        foreach (var cliente in clientes)
+        {
+            Console.WriteLine("{0,-35} {1,-20} {2,-20} {3,-20} {4,-15}", cliente.Nome, cliente.DataNascimento.ToString("dd/MM/yyyy"), cliente.CPF, cliente.AlturaCm, cliente.PesoKg);
+        }
+        Console.WriteLine(new string('.', 100));
+    }
+
+
+
+    public static void CriarTreino()
+    {
+        Treino treino = new Treino();
+
+        Console.Write("Digite o tipo de treino: ");
+        treino.Tipo = Console.ReadLine();
+
+        Console.Write("Digite o objetivo do treino: ");
+        treino.Objetivo = Console.ReadLine();
+
+        Console.Write("Digite a duração estimada em minutos: ");
+        treino.DuracaoEstimadaMinutos = int.Parse(Console.ReadLine());
+
+        DateTime dataInicio;
+        while (true)
+        {
+            Console.Write("Digite a data de início (DD/MM/YYYY): ");
+            string? dataInicioStr = Console.ReadLine();
+
+            if (DateTime.TryParseExact(dataInicioStr, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dataInicio))
+            {
+                treino.DataInicio = dataInicio;
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Formato de data inválido. Tente novamente.");
+            }
+        }
+
+        Console.Write("Digite o número de dias de vencimento: ");
+        treino.VencimentoDias = int.Parse(Console.ReadLine());
+
+        Console.Write("Digite o nome do treinador responsável: ");
+        string? nomeTreinador = Console.ReadLine();
+        Treinador? treinadorResponsavel = treinadores.Find(t => t.Nome == nomeTreinador);
+        if (treinadorResponsavel != null)
+        {
+            treino.TreinadorResponsavel = treinadorResponsavel;
+        }
+        else
+        {
+            Console.WriteLine("Treinador não encontrado.");
+            return;
+        }
+
+        // Adicionar treino à lista de treinos
+        treinos.Add(treino);
+
+        Console.WriteLine("Treino criado com sucesso!");
+
+        // Perguntar se deseja adicionar exercícios ao treino recém-criado
+        Console.Write("Deseja adicionar exercícios ao treino recém-criado? (S/N): ");
+        string resposta = Console.ReadLine();
+
+        if (resposta.ToUpper() == "S")
+        {
+            AdicionarExerciciosAoTreino(treino);
+        }
+    }
+
+    public void AdicionarAvaliacao(Cliente cliente, int nota)
+    {
+        Avaliacoes.Add(new Avaliacao(cliente, nota));
+    }
+
+    public static void RealizarAvaliacao()
+    {
+        Console.Write("Digite o tipo do treino para realizar a avaliação: ");
+        string? tipoTreino = Console.ReadLine();
+        Treino? treino = treinos.Find(t => t.Tipo == tipoTreino);
+
+        if (treino != null)
+        {
+            // Solicitar informações do cliente e nota
+            Console.Write("Digite o nome do cliente para realizar a avaliação: ");
+            string? nomeCliente = Console.ReadLine();
+
+            Cliente? cliente = clientes.Find(c => c.Nome == nomeCliente);
+
+            Console.Write("Digite a nota da avaliação (entre 0 e 10): ");
+            if (int.TryParse(Console.ReadLine(), out int nota) && nota >= 0 && nota <= 10)
+            {
+                // Adicionar a avaliação à lista de avaliações do treino
+                if (cliente != null)
                 {
-                    idade--;
+                    treino.Avaliacoes.Add(new Avaliacao(cliente, nota));
+                    Console.WriteLine($"Avaliação realizada com sucesso para {cliente.Nome}.");
                 }
-
-                return idade >= idadeMinima && idade <= idadeMaxima;
-            });
-
-            // Print column headers with fixed width
-            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", "Nome", "Data de Nascimento", "CPF", "CREF");
-
-            // Print a line of equal signs as a separator
-            Console.WriteLine(new string('=', 83));
-
-            Console.WriteLine($"Treinadores com idade entre {idadeMinima} e {idadeMaxima} anos:");
-
-            foreach (var treinador in treinadoresEntreMinMax)
-            {
-                // Print information about each treinador with fixed width
-                Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", treinador.Nome, treinador.DataNasc.ToString("dd/MM/yyyy"), treinador.CPF, treinador.CREF);
-                Console.WriteLine(new string('.', 83));
-            }
-        }
-
-        public static void RelIdadeClientesEntreMinMax(int idadeMinima, int idadeMaxima)
-        {
-            DateTime dataAtual = DateTime.Now;
-
-            var clientesEntreMinMax = ListaDeClientes.Where(cliente =>
-            {
-                int idade = dataAtual.Year - cliente.DataNasc.Year;
-
-                if (dataAtual.Month < cliente.DataNasc.Month || (dataAtual.Month == cliente.DataNasc.Month && dataAtual.Day < cliente.DataNasc.Day))
+                else
                 {
-                    idade--;
+                    Console.WriteLine("Cliente não encontrado, mas a avaliação foi registrada.");
                 }
-
-                return idade >= idadeMinima && idade <= idadeMaxima;
-            });
-
-            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", "Nome", "Data de Nascimento", "Altura", "Peso");
-
-            Console.WriteLine(new string('=', 83));
-
-            Console.WriteLine($"Clientes com idade entre {idadeMinima} e {idadeMaxima} anos:");
-
-            foreach (var cliente in clientesEntreMinMax)
+            }
+            else
             {
-                Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", cliente.Nome, cliente.DataNasc.ToString("dd/MM/yyyy"), cliente.Altura, cliente.Peso);
-                Console.WriteLine(new string('.', 83));
+                Console.WriteLine("Nota inválida. A nota deve estar entre 0 e 10.");
             }
         }
-
-         public static void RelatorioClientesIMC(double valorMinimoIMC)
+        else
         {
-            var clientesFiltrados = ListaDeClientes
-                .Where(cliente => CalcularIMC(cliente) > valorMinimoIMC)
-                .OrderBy(cliente => CalcularIMC(cliente));
+            Console.WriteLine("Treino não encontrado.");
+        }
+    }
 
-            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", "Nome", "Data de Nascimento", "Altura", "Peso", "IMC");
+    public static void ExibirDetalhesTreino()
+    {
+        Console.Write("Digite o tipo do treino para exibir detalhes: ");
+        string? tipoTreino = Console.ReadLine();
+        Treino? treino = treinos.Find(t => t.Tipo == tipoTreino);
 
-            Console.WriteLine(new string('=', 103));
+        if (treino != null)
+        {
+            ExibirDetalhesDoTreino(treino);
+        }
+        else
+        {
+            Console.WriteLine("Treino não encontrado.");
+        }
+    }
 
-            Console.WriteLine($"Clientes com IMC maior que {valorMinimoIMC}:");
+    public static void ExibirDetalhesDoTreino(Treino treino)
+    {
+        Console.WriteLine($"Detalhes do Treino '{treino.Tipo}':");
+        Console.WriteLine($"Tipo: {treino.Tipo}");
+        Console.WriteLine($"Objetivo: {treino.Objetivo}");
+        Console.WriteLine($"Duração Estimada (minutos): {treino.DuracaoEstimadaMinutos}");
+        Console.WriteLine($"Data de Início: {treino.DataInicio}");
+        Console.WriteLine($"Vencimento (dias): {treino.VencimentoDias}");
+        Console.WriteLine($"Treinador Responsável: {treino.TreinadorResponsavel.Nome}");
 
-            foreach (var cliente in clientesFiltrados)
+        Console.WriteLine("Exercícios:");
+
+        if (treino.ListaExercicios != null && treino.ListaExercicios.Any())
+        {
+            foreach (var exercicio in treino.ListaExercicios)
             {
-                Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", cliente.Nome, cliente.DataNasc.ToString("dd/MM/yyyy"), cliente.Altura, cliente.Peso, CalcularIMC(cliente).ToString("F2"));
-                Console.WriteLine(new string('.', 103));
+                Console.WriteLine("\nDetalhes do Exercício:");
+                Console.WriteLine($"Grupo Muscular: {exercicio.GrupoMuscular}");
+                Console.WriteLine($"Séries: {exercicio.Series}");
+                Console.WriteLine($"Repetições: {exercicio.Repeticoes}");
+                Console.WriteLine($"Tempo de Intervalo (segundos): {exercicio.TempoIntervaloSegundos}");
             }
         }
-
-        private static double CalcularIMC(Cliente cliente)
+        else
         {
-            if (cliente.Altura <= 0 || cliente.Peso <= 0)
-            {
-                return 0.0; 
-            }
-
-            double alturaMetros = cliente.Altura / 100; 
-            return cliente.Peso / (alturaMetros * alturaMetros);
+            Console.WriteLine("Nenhum exercício registrado.");
         }
 
-        public static void GerarRelatorioClientesOrdemAlfabetica()
+        Console.WriteLine("\nAvaliações:");
+
+        // if (treino.Avaliacoes != null && treino.Avaliacoes.Any())
+        if (treino.Avaliacoes != null)
         {
-            Console.WriteLine("\nClientes Cadastrados em Ordem Alfabética:");
-
-            var clientesOrdenados = GestaoDaAcademia.ListaDeClientes.OrderBy(cliente => cliente.Nome);
-
-            foreach (var cliente in clientesOrdenados)
+            foreach (var avaliacao in treino.Avaliacoes)
             {
-                Console.WriteLine($"Nome: {cliente.Nome}, CPF: {cliente.CPF}, Data de Nascimento: {cliente.DataNasc}, Altura: {cliente.Altura}, Peso: {cliente.Peso}");
+                Console.WriteLine($"{avaliacao.Cliente.Nome}: {avaliacao.Nota}");
             }
         }
-
-        public static void RelIdadeClientesOrdenados()
+        else
         {
-            // Ordenar os clientes pelo mais velho para o mais novo
-            var clientesOrdenados = ListaDeClientes.OrderByDescending(cliente => cliente.DataNasc);
-
-            // Print column headers with fixed width
-            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", "Nome", "Data de Nascimento", "Altura", "Peso");
-
-            // Print a line of equal signs as a separator
-            Console.WriteLine(new string('=', 83));
-
-            Console.WriteLine($"Clientes ordenados do mais velho para o mais novo:");
-
-            foreach (var cliente in clientesOrdenados)
-            {
-                // Print information about each cliente with fixed width
-                Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", cliente.Nome, cliente.DataNasc.ToString("dd/MM/yyyy"), cliente.Altura, cliente.Peso);
-                Console.WriteLine(new string('.', 83));
-            }
+            Console.WriteLine("Nenhuma avaliação registrada.");
         }
+    }
 
-        public static void RelAniversariantesPorMes()
+    public static void AdicionarExerciciosAoTreino(Treino treino)
+    {
+        while (true)
         {
-            for (int mes = 1; mes <= 12; mes++)
+            Console.WriteLine("Adicionar Exercício ao Treino:");
+            Exercicio exercicio = new Exercicio();
+
+            Console.Write("Grupo Muscular: ");
+            exercicio.GrupoMuscular = Console.ReadLine();
+
+            Console.Write("Número de Séries: ");
+            exercicio.Series = int.Parse(Console.ReadLine());
+
+            Console.Write("Número de Repetições: ");
+            exercicio.Repeticoes = int.Parse(Console.ReadLine());
+
+            Console.Write("Tempo de Intervalo (segundos): ");
+            exercicio.TempoIntervaloSegundos = int.Parse(Console.ReadLine());
+
+            // Adicionar o exercício ao treino
+            AdicionarExercicioAoTreino(treino, exercicio);
+
+            Console.Write("Deseja adicionar outro exercício? (S/N): ");
+            string? resposta = Console.ReadLine();
+
+            if (resposta.ToUpper() != "S")
             {
-                DateTime dataAtual = DateTime.Now;
-
-                var treinadoresAniversariantes = ListaDeTreinadores
-                    .Where(treinador => treinador.DataNasc.Month == mes)
-                    .OrderBy(treinador => treinador.DataNasc.Day);
-
-                var clientesAniversariantes = ListaDeClientes
-                    .Where(cliente => cliente.DataNasc.Month == mes)
-                    .OrderBy(cliente => cliente.DataNasc.Day);
-
-                // Imprimir apenas se houver aniversariantes
-                if (treinadoresAniversariantes.Any() || clientesAniversariantes.Any())
-                {
-                    // Print column headers with fixed width
-                    Console.WriteLine("{0,-20} {1,-20} {2,-20}", "Nome", "Data de Nascimento", "Tipo");
-
-                    // Print a line of equal signs as a separator
-                    Console.WriteLine(new string('=', 63));
-
-                    Console.WriteLine($"Aniversariantes do mês {mes}:");
-
-                    // Exibir treinadores aniversariantes
-                    Console.WriteLine("\nTreinadores:");
-                    foreach (var treinador in treinadoresAniversariantes)
-                    {
-                        Console.WriteLine("{0,-20} {1,-20} {2,-20}", treinador.Nome, treinador.DataNasc.ToString("dd/MM/yyyy"), "Treinador");
-                    }
-
-                    // Exibir clientes aniversariantes
-                    Console.WriteLine("\nClientes:");
-                    foreach (var cliente in clientesAniversariantes)
-                    {
-                        Console.WriteLine("{0,-20} {1,-20} {2,-20}", cliente.Nome, cliente.DataNasc.ToString("dd/MM/yyyy"), "Cliente");
-                    }
-
-                    Console.WriteLine(); // Adicionar uma linha em branco entre os meses
-                }
+                break;
             }
         }
     }
+
+    public static void AdicionarExercicioAoTreino(Treino treino, Exercicio exercicio)
+    {
+        if (treino.ListaExercicios == null)
+        {
+            treino.ListaExercicios = new List<Exercicio>();
+        }
+
+        treino.ListaExercicios.Add(exercicio);
+
+        Console.WriteLine($"Exercício adicionado ao treino '{treino.Tipo}'.");
+    }
+
+    // public static void SalvarDados()
+    // {
+    //     SalvarTreinadores();
+    //     SalvarClientes();
+    //     SalvarTreinos();
+    //     SalvarExercicios();
+    //     SalvarAvaliacoes();
+    // }
+
+    // public static void CarregarDados()
+    // {
+    //     CarregarTreinadores();
+    //     CarregarClientes();
+    //     CarregarTreinos();
+    //     CarregarExercicios();
+    //     CarregarAvaliacoes();
+    // }
+
+    // private static void SalvarTreinadores()
+    // {
+    //     string filePath = "treinadores.txt";
+
+    //     using (StreamWriter writer = new StreamWriter(filePath))
+    //     {
+    //         foreach (var treinador in treinadores)
+    //         {
+    //             writer.WriteLine($"{treinador.Nome},{treinador.DataNascimento},{treinador.CPF},{treinador.CREF}");
+    //         }
+    //     }
+    // }
+
+    // private static void CarregarTreinadores()
+    // {
+    //     string filePath = "treinadores.txt";
+
+    //     if (File.Exists(filePath))
+    //     {
+    //         treinadores.Clear();
+
+    //         using (StreamReader reader = new StreamReader(filePath))
+    //         {
+    //             string line;
+    //             while ((line = reader.ReadLine()) != null)
+    //             {
+    //                 string[] parts = line.Split(',');
+    //                 if (parts.Length == 4)
+    //                 {
+    //                     Treinador treinador = new Treinador
+    //                     {
+    //                         Nome = parts[0],
+    //                         DataNascimento = DateTime.Parse(parts[1]),
+    //                         CPF = parts[2],
+    //                         CREF = parts[3]
+    //                     };
+    //                     treinadores.Add(treinador);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    // private static void SalvarClientes()
+    // {
+    //     string filePath = "clientes.txt";
+
+    //     using (StreamWriter writer = new StreamWriter(filePath))
+    //     {
+    //         foreach (var cliente in clientes)
+    //         {
+    //             writer.WriteLine($"{cliente.Nome},{cliente.DataNascimento},{cliente.CPF},{cliente.AlturaCm},{cliente.PesoKg}");
+    //         }
+    //     }
+    // }
+
+    // private static void CarregarClientes()
+    // {
+    //     string filePath = "clientes.txt";
+
+    //     if (File.Exists(filePath))
+    //     {
+    //         clientes.Clear();
+
+    //         using (StreamReader reader = new StreamReader(filePath))
+    //         {
+    //             string line;
+    //             while ((line = reader.ReadLine()) != null)
+    //             {
+    //                 string[] parts = line.Split(',');
+    //                 if (parts.Length == 5)
+    //                 {
+    //                     Cliente cliente = new Cliente
+    //                     {
+    //                         Nome = parts[0],
+    //                         DataNascimento = DateTime.Parse(parts[1]),
+    //                         CPF = parts[2],
+    //                         AlturaCm = int.Parse(parts[3]),
+    //                         PesoKg = int.Parse(parts[4])
+    //                     };
+    //                     clientes.Add(cliente);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+
+    // private static void SalvarTreinos()
+    // {
+    //     string filePath = "treinos.txt";
+
+    //     using (StreamWriter writer = new StreamWriter(filePath))
+    //     {
+    //         foreach (var treino in treinos)
+    //         {
+    //             // Escrever os dados do treino no formato desejado
+    //             writer.WriteLine($"{treino.Tipo},{treino.Objetivo},{treino.DuracaoEstimadaMinutos},{treino.DataInicio},{treino.VencimentoDias},{treino.TreinadorResponsavel.Nome}");
+    //         }
+    //     }
+    // }
+
+    // private static void CarregarTreinos()
+    // {
+    //     string filePath = "treinos.txt";
+
+    //     if (File.Exists(filePath))
+    //     {
+    //         treinos.Clear();
+
+    //         using (StreamReader reader = new StreamReader(filePath))
+    //         {
+    //             string line;
+    //             while ((line = reader.ReadLine()) != null)
+    //             {
+    //                 string[] parts = line.Split(',');
+    //                 if (parts.Length == 6)
+    //                 {
+    //                     Treino treino = new Treino
+    //                     {
+    //                         Tipo = parts[0],
+    //                         Objetivo = parts[1],
+    //                         DuracaoEstimadaMinutos = int.Parse(parts[2]),
+    //                         DataInicio = DateTime.Parse(parts[3]),
+    //                         VencimentoDias = int.Parse(parts[4]),
+    //                         TreinadorResponsavel = treinadores.Find(t => t.Nome == parts[5])
+    //                     };
+    //                     treinos.Add(treino);
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    // private static void SalvarExercicios()
+    // {
+    //     string filePath = "exercicios.txt";
+
+    //     using (StreamWriter writer = new StreamWriter(filePath))
+    //     {
+    //         foreach (var treino in treinos)
+    //         {
+    //             if (treino.ListaExercicios != null)
+    //             {
+    //                 foreach (var exercicio in treino.ListaExercicios)
+    //                 {
+    //                     // Escrever os dados do exercício no formato desejado
+    //                     writer.WriteLine($"{treino.Tipo},{exercicio.GrupoMuscular},{exercicio.Series},{exercicio.Repeticoes},{exercicio.TempoIntervaloSegundos}");
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    // private static void CarregarExercicios()
+    // {
+    //     string filePath = "exercicios.txt";
+
+    //     if (File.Exists(filePath))
+    //     {
+    //         foreach (var treino in treinos)
+    //         {
+    //             treino.ListaExercicios = new List<Exercicio>();
+    //         }
+
+    //         using (StreamReader reader = new StreamReader(filePath))
+    //         {
+    //             string line;
+    //             while ((line = reader.ReadLine()) != null)
+    //             {
+    //                 string[] parts = line.Split(',');
+    //                 if (parts.Length == 5)
+    //                 {
+    //                     Exercicio exercicio = new Exercicio
+    //                     {
+    //                         GrupoMuscular = parts[1],
+    //                         Series = int.Parse(parts[2]),
+    //                         Repeticoes = int.Parse(parts[3]),
+    //                         TempoIntervaloSegundos = int.Parse(parts[4])
+    //                     };
+
+    //                     // Encontrar o treino associado ao exercício
+    //                     Treino treino = treinos.Find(t => t.Tipo == parts[0]);
+    //                     if (treino != null)
+    //                     {
+    //                         treino.ListaExercicios.Add(exercicio);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    // private static void SalvarAvaliacoes()
+    // {
+    //     string filePath = "avaliacoes.txt";
+
+    //     using (StreamWriter writer = new StreamWriter(filePath))
+    //     {
+    //         foreach (var treino in treinos)
+    //         {
+    //             if (treino.Avaliacoes != null)
+    //             {
+    //                 foreach (var avaliacao in treino.Avaliacoes)
+    //                 {
+    //                     // Escrever os dados da avaliação no formato desejado
+    //                     writer.WriteLine($"{treino.Tipo},{avaliacao.Cliente.Nome},{avaliacao.Nota}");
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
+
+    // private static void CarregarAvaliacoes()
+    // {
+    //     string filePath = "avaliacoes.txt";
+
+    //     if (File.Exists(filePath))
+    //     {
+    //         foreach (var treino in treinos)
+    //         {
+    //             treino.Avaliacoes = new List<Avaliacao>();
+    //         }
+
+    //         using (StreamReader reader = new StreamReader(filePath))
+    //         {
+    //             string line;
+    //             while ((line = reader.ReadLine()) != null)
+    //             {
+    //                 string[] parts = line.Split(',');
+    //                 if (parts.Length == 3)
+    //                 {
+    //                     // Encontrar o treino associado à avaliação
+    //                     Treino treino = treinos.Find(t => t.Tipo == parts[0]);
+    //                     if (treino != null)
+    //                     {
+    //                         Cliente cliente = clientes.Find(c => c.Nome == parts[1]);
+    //                         if (cliente != null)
+    //                         {
+    //                             int nota = int.Parse(parts[2]);
+    //                             treino.Avaliacoes.Add(new Avaliacao(cliente, nota));
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }

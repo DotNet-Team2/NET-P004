@@ -1,9 +1,7 @@
-using System;
+namespace GedAcademia;
 
-namespace GedAcademia
+public class Treinador : Pessoa
 {
-    public class Treinador : Pessoa
-    {
-        public string? CREF { get; set; }
-    }
+    public string? CREF { get; set; }
+
 }

@@ -1,11 +1,13 @@
-using System;
+namespace GedAcademia;
 
-namespace GedAcademia
+public class Pessoa
 {
-    public class Pessoa
+    public string? Nome { get; set; }
+    public DateTime DataNascimento { get; set; }
+    public string? CPF { get; set; }
+    public static bool ValidarCPF(string cpf)
     {
-        public string? Nome { get; set; }
-        public string? CPF { get; set; }
-        public DateTime DataNasc { get; set; }
+        return cpf.All(char.IsDigit) && cpf.Length == 11;
     }
+
 }
