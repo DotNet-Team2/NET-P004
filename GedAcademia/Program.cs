@@ -12,14 +12,18 @@ public class Program
         {
             Console.WriteLine("Escolha uma opção:");
             Console.WriteLine();
-            Console.WriteLine("1. CADASTRAR TREINADORES");
-            Console.WriteLine("2. CADASTRAR CLIENTES");
-            Console.WriteLine("3. LISTAGEM DOS TREINADORES");
-            Console.WriteLine("4. LISTAGEM DOS CLIENTES");
-            Console.WriteLine("5. CRIAR TREINO ");
-            Console.WriteLine("6. REALIZAR AVALIAÇÃO");
-            Console.WriteLine("7. EXIBIR DETALHES DO TREINO");
-            Console.WriteLine("0. SAIR ");
+            Console.WriteLine(" 1. CADASTRAR TREINADORES");
+            Console.WriteLine(" 2. CADASTRAR CLIENTES");
+            Console.WriteLine(" 3. LISTAGEM DOS TREINADORES");
+            Console.WriteLine(" 4. LISTAGEM DOS CLIENTES");
+            Console.WriteLine(" 5. CRIAR TREINO ");
+            Console.WriteLine(" 6. REALIZAR AVALIAÇÃO");
+            Console.WriteLine(" 7. EXIBIR DETALHES DO TREINO");
+            Console.WriteLine(" 8. RELATÓRIOS DA IDADE DOS TREINADORES ENTRE DOIS VALORES");
+            Console.WriteLine(" 9. RELATÓRIOS DA IDADE DOS CLIENTES ENTRE DOIS VALORES");
+            Console.WriteLine("10. RELATÓRIO DO IMC DOS CLIENTES EM ORDEM CRESCENTE");
+            Console.WriteLine("11. RELATÓRIO DOS CLIENTES EM ORDEM ALFABÉTICA");
+            Console.WriteLine(" 0. SAIR ");
             Console.WriteLine();
 
             Console.Write("Opção: ");
@@ -67,6 +71,30 @@ public class Program
                     case 7:
                         Console.WriteLine();
                         GestaoDaAcademia.ExibirDetalhesTreino();
+                        Console.WriteLine();
+                        break;
+
+                    case 8:
+                        Console.WriteLine();
+                        GestaoDaAcademia.RelIdadeEntreMinMaxTreinador();
+                        Console.WriteLine();
+                        break;
+
+                    case 9:
+                        Console.WriteLine();
+                        GestaoDaAcademia.RelIdadeEntreMinMaxClientes();
+                        Console.WriteLine();
+                        break;
+
+                    case 10:
+                        Console.WriteLine();
+                        GestaoDaAcademia.RelatorioClientesIMC();
+                        Console.WriteLine();
+                        break;
+
+                    case 11:
+                        Console.WriteLine();
+                        GestaoDaAcademia.RelClientesOrdemAlfabetica();
                         Console.WriteLine();
                         break;
 

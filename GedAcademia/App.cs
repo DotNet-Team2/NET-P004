@@ -280,7 +280,7 @@ public class GestaoDaAcademia
                 if (cliente != null)
                 {
                     treino.Avaliacoes.Add(new Avaliacao(cliente, nota));
-                    Console.WriteLine($"Avaliação realizada com sucesso para {cliente.Nome}.");
+                    Console.WriteLine($"Avaliação realizada com sucesso por {cliente.Nome}.");
                 }
                 else
                 {
@@ -407,4 +407,163 @@ public class GestaoDaAcademia
 
         Console.WriteLine($"Exercício adicionado ao treino '{treino.Tipo}'.");
     }
+
+    // Relatorios de 1 até 10
+    public static void RelIdadeEntreMinMaxTreinador()
+    {
+        // Solicitar a idade mínima ao usuário
+        Console.Write("Digite a idade mínima: ");
+        if (!int.TryParse(Console.ReadLine(), out int idadeMinima))
+        {
+            Console.WriteLine("Entrada inválida para idade mínima. Encerrando relatório.");
+            return;
+        }
+
+        // Solicitar a idade máxima ao usuário
+        Console.Write("Digite a idade máxima: ");
+        if (!int.TryParse(Console.ReadLine(), out int idadeMaxima))
+        {
+            Console.WriteLine("Entrada inválida para idade máxima. Encerrando relatório.");
+            return;
+        }
+
+        // Obtém a data atual
+        DateTime dataAtual = DateTime.Now;
+
+        // Filtra os clientes com idade entre os valores fornecidos
+        var treinadorEntreMinMax = treinadores.Where(treinadores =>
+        {
+            int idade = dataAtual.Year - treinadores.DataNascimento.Year;
+
+            // Ajusta a idade se ainda não tiver completado o aniversário este ano
+            if (dataAtual.Month < treinadores.DataNascimento.Month || (dataAtual.Month == treinadores.DataNascimento.Month && dataAtual.Day < treinadores.DataNascimento.Day))
+            {
+                idade--;
+            }
+
+            return idade >= idadeMinima && idade <= idadeMaxima;
+        });
+
+        // Print column headers with fixed width
+        Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", "Nome", "Data de Nascimento", "CPF", "CREF");
+
+        // Print a line of equal signs as a separator
+        Console.WriteLine(new string('=', 103));
+
+        Console.WriteLine($"Treinadores com idade entre {idadeMinima} e {idadeMaxima} anos:");
+
+        foreach (var treinadores in treinadorEntreMinMax)
+        {
+            // Print information about each cliente with fixed width
+            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", treinadores.Nome, treinadores.DataNascimento.ToString("dd/MM/yyyy"), treinadores.CPF, treinadores.CREF);
+            Console.WriteLine(new string('.', 103));
+        }
+    }
+
+    public static void RelIdadeEntreMinMaxClientes()
+    {
+        // Solicitar a idade mínima ao usuário
+        Console.Write("Digite a idade mínima: ");
+        if (!int.TryParse(Console.ReadLine(), out int idadeMinima))
+        {
+            Console.WriteLine("Entrada inválida para idade mínima. Encerrando relatório.");
+            return;
+        }
+
+        // Solicitar a idade máxima ao usuário
+        Console.Write("Digite a idade máxima: ");
+        if (!int.TryParse(Console.ReadLine(), out int idadeMaxima))
+        {
+            Console.WriteLine("Entrada inválida para idade máxima. Encerrando relatório.");
+            return;
+        }
+
+        // Obtém a data atual
+        DateTime dataAtual = DateTime.Now;
+
+        // Filtra os clientes com idade entre os valores fornecidos
+        var clientesEntreMinMax = clientes.Where(cliente =>
+        {
+            int idade = dataAtual.Year - cliente.DataNascimento.Year;
+
+            // Ajusta a idade se ainda não tiver completado o aniversário este ano
+            if (dataAtual.Month < cliente.DataNascimento.Month || (dataAtual.Month == cliente.DataNascimento.Month && dataAtual.Day < cliente.DataNascimento.Day))
+            {
+                idade--;
+            }
+
+            return idade >= idadeMinima && idade <= idadeMaxima;
+        });
+
+        // Print column headers with fixed width
+        Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", "Nome", "Data de Nascimento", "CPF", "Altura", "Peso");
+
+        // Print a line of equal signs as a separator
+        Console.WriteLine(new string('=', 103));
+
+        Console.WriteLine($"Clientes com idade entre {idadeMinima} e {idadeMaxima} anos:");
+
+        foreach (var cliente in clientesEntreMinMax)
+        {
+            // Print information about each cliente with fixed width
+            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", cliente.Nome, cliente.DataNascimento.ToString("dd/MM/yyyy"), cliente.CPF, cliente.AlturaCm, cliente.PesoKg);
+            Console.WriteLine(new string('.', 103));
+        }
+    }
+
+    private static double CalcularIMC(Cliente cliente)
+    {
+        if (cliente.AlturaCm <= 0 || cliente.PesoKg <= 0)
+        {
+            return 0.0;
+        }
+
+        double alturaMetros = cliente.AlturaCm / 100;
+        return cliente.PesoKg / (alturaMetros * alturaMetros);
+    }
+
+    public static void RelatorioClientesIMC()
+    {
+        // Solicitar ao usuário o valor mínimo de IMC
+        Console.Write("Digite o valor mínimo de IMC: ");
+        if (double.TryParse(Console.ReadLine(), out double valorMinimoIMC))
+        {
+            // Filtrar clientes com IMC maior que o valor mínimo
+            var clientesFiltrados = clientes
+                .Where(cliente => CalcularIMC(cliente) > valorMinimoIMC)
+                .OrderBy(cliente => CalcularIMC(cliente));
+
+            // Imprimir cabeçalho
+            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", "Nome", "Data de Nascimento", "Altura", "Peso", "IMC");
+
+            // Imprimir linha de separação
+            Console.WriteLine(new string('=', 103));
+
+            // Imprimir lista de clientes filtrados
+            Console.WriteLine($"Clientes com IMC maior que {valorMinimoIMC}:");
+
+            foreach (var cliente in clientesFiltrados)
+            {
+                Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", cliente.Nome, cliente.DataNascimento.ToString("dd/MM/yyyy"), cliente.AlturaCm, cliente.PesoKg, CalcularIMC(cliente).ToString("F4"));
+                Console.WriteLine(new string('.', 103));
+            }
+        }
+        else
+        {
+            Console.WriteLine("Valor inválido para o IMC.");
+        }
+    }
+
+    public static void RelClientesOrdemAlfabetica()
+        {
+            Console.WriteLine("\nClientes Cadastrados em Ordem Alfabética:");
+
+            var clientesOrdenados = GestaoDaAcademia.clientes.OrderBy(cliente => cliente.Nome);
+
+            foreach (var cliente in clientesOrdenados)
+            {
+                Console.WriteLine($"Nome: {cliente.Nome}, CPF: {cliente.CPF}, Data de Nascimento: {cliente.DataNascimento}, Altura: {cliente.AlturaCm}, Peso: {cliente.PesoKg}");
+            }
+        }
+
 }
