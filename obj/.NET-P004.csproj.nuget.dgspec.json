@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/franklin/residencia/Modulo2/dotnet_atividades/.NET-P004/.NET-P004.csproj": {}
+    "C:\\Users\\aless\\Desktop\\Prova-dotnet\\.NET-P004\\.NET-P004.csproj": {}
   },
   "projects": {
-    "/home/franklin/residencia/Modulo2/dotnet_atividades/.NET-P004/.NET-P004.csproj": {
+    "C:\\Users\\aless\\Desktop\\Prova-dotnet\\.NET-P004\\.NET-P004.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/franklin/residencia/Modulo2/dotnet_atividades/.NET-P004/.NET-P004.csproj",
+        "projectUniqueName": "C:\\Users\\aless\\Desktop\\Prova-dotnet\\.NET-P004\\.NET-P004.csproj",
         "projectName": ".NET-P004",
-        "projectPath": "/home/franklin/residencia/Modulo2/dotnet_atividades/.NET-P004/.NET-P004.csproj",
-        "packagesPath": "/home/franklin/.nuget/packages/",
-        "outputPath": "/home/franklin/residencia/Modulo2/dotnet_atividades/.NET-P004/obj/",
+        "projectPath": "C:\\Users\\aless\\Desktop\\Prova-dotnet\\.NET-P004\\.NET-P004.csproj",
+        "packagesPath": "C:\\Users\\aless\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\aless\\Desktop\\Prova-dotnet\\.NET-P004\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/franklin/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\aless\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -48,12 +48,30 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.14, 7.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[7.0.14, 7.0.14]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.14, 7.0.14]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.14, 7.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/7.0.404/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
