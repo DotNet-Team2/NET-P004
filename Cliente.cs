@@ -43,7 +43,7 @@ public class Cliente : Pessoa
         set { treinosCliente = value; }
     }
 
-    public int Idade()
+  /*   public int Idade()
     {
         int idade = DateTime.Today.Year - this.GetDataNascimento().Year;
 
@@ -53,7 +53,7 @@ public class Cliente : Pessoa
         }
 
         return idade;
-    }
+    } */
 
     public int getTamanhoListTreino(){
         return treinosCliente.Count;

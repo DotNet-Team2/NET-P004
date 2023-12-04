@@ -8,6 +8,7 @@ public class Treino
     private DateTime dataInicio;
     private int vencimento;
     private Treinador treinador;
+    private List<(Cliente, int?)> avaliacoesClientes;
 
     public Treino(string tipo, string objetivo, List<Exercicios> exercicios, int duracao, DateTime dataInicio, int vencimento, Treinador treinador)
         {
@@ -18,6 +19,7 @@ public class Treino
             this.vencimento = vencimento;
             this.treinador = treinador;
             this.exercicios = new List<Exercicios>(); // Inicializa a lista de exercícios
+            this.avaliacoesClientes = new List<(Cliente, int?)>();
         }
 
         // Método get para o campo 'tipo'
@@ -102,5 +104,16 @@ public class Treino
         public void SetTreinador(Treinador novoTreinador)
         {
             treinador = novoTreinador;
+        }
+
+        public void AdicionarAvaliacaoCliente(Cliente cliente, int? avaliacao)
+        {
+            avaliacoesClientes.Add((cliente, avaliacao));
+        }
+
+        // Método para obter as avaliações dos clientes
+        public List<(Cliente, int?)> ObterAvaliacoesClientes()
+        {
+            return avaliacoesClientes;
         }
 }

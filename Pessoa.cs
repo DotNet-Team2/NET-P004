@@ -48,4 +48,16 @@ public class Pessoa
         {
             cpf = novoCpf;
         }
+
+       public int Idade()
+    {
+        int idade = DateTime.Today.Year - this.GetDataNascimento().Year;
+
+        if (this.GetDataNascimento() > DateTime.Today.AddYears(-idade))
+        {
+            idade--;
+        }
+
+        return idade;
+    } 
 }
