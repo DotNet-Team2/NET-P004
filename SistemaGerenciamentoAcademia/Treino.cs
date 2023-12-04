@@ -26,9 +26,12 @@ public class Treino
 
     internal List<Exercicio> Top10ExerciciosMaisUtilizados()
     {
-        // Substitua esta lógica pela implementação real para obter os exercícios mais utilizados nos treinos.
-        // A lógica real dependerá de como os exercícios são registrados e avaliados nos treinos.
-        // Aqui, estamos retornando uma lista vazia como exemplo.
+// Verifica se há exercícios na lista de treinos
+        if (ListaExercicios == null || ListaExercicios.Count == 0)
+        {
+            Console.WriteLine("Não há exercícios na lista de treinos para obter os exercícios mais utilizados.");
+            return new List<Exercicio>();
+        }
         return new List<Exercicio>();
     }
 }
