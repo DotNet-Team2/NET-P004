@@ -10,6 +10,7 @@ public class Treino
     public int VencimentoDias { get; set; }
     public Treinador TreinadorResponsavel { get; set; }
     public List<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
+    public int LimiteExercicios { get; set; } = 10;
 
 }
 

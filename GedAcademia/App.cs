@@ -31,7 +31,7 @@ public class GestaoDaAcademia
             }
             else
             {
-                Console.WriteLine("O formato da data é inválido. Tente novamente.");
+                Console.WriteLine("O formato da data é inválido, digite um válido.");
             }
         }
 
@@ -53,23 +53,22 @@ public class GestaoDaAcademia
             }
             else
             {
-                Console.WriteLine("CPF inválido. Digite um CPF válido.");
+                Console.WriteLine("CPF inválido, digite um válido.");
             }
         }
 
         Console.Write("Digite o CREF: ");
         string? crefTreinador = Console.ReadLine();
 
-        // Verificar se o CREF é único
-        if (CREFUnico(crefTreinador))
+        while (!CREFUnico(crefTreinador))
         {
-            crefsUtilizados.Add(crefTreinador);
+            Console.WriteLine("CREF já utilizado, digite um válido.");
+            Console.Write("Digite o CREF: ");
+            crefTreinador = Console.ReadLine();
         }
-        else
-        {
-            Console.WriteLine("CREF já utilizado. Digite um CREF único.");
-            return;
-        }
+
+        crefsUtilizados.Add(crefTreinador);
+
 
         try
         {
@@ -108,7 +107,7 @@ public class GestaoDaAcademia
             }
             else
             {
-                Console.WriteLine("O formato da data é inválido. Tente novamente.");
+                Console.WriteLine("O formato da data é inválido, digite uma válido.");
             }
         }
 
@@ -130,7 +129,7 @@ public class GestaoDaAcademia
             }
             else
             {
-                Console.WriteLine("CPF inválido. Digite um CPF válido.");
+                Console.WriteLine("CPF inválido, digite um válido.");
             }
         }
 
@@ -156,7 +155,7 @@ public class GestaoDaAcademia
         }
         catch (FormatException)
         {
-            Console.WriteLine("Formato de data inválido.");
+            Console.WriteLine("Formato de data inválido, digite um válido");
         }
         catch (Exception ex)
         {
@@ -174,22 +173,22 @@ public class GestaoDaAcademia
         foreach (var treinador in treinadores)
         {
             Console.WriteLine("{0,-35} {1,-20} {2,-20} {3,-15}", treinador.Nome, treinador.DataNascimento.ToString("dd/MM/yyyy"), treinador.CPF, treinador.CREF);
+            Console.WriteLine(new string('.', 100));
         }
-        Console.WriteLine(new string('.', 100));
     }
 
     public static void ListarClientes()
     {
         Console.WriteLine("Lista de Clientes:");
         Console.WriteLine();
-        Console.WriteLine("{0,-35} {1,-20} {2,-20} {3,-20} {4,-15}", "Nome", "Data de Nascimento", "CPF", "Altura(cm)", "Peso(Kg)");
+        Console.WriteLine("{0,-35} {1,-20} {2,-20} {3,-12} {4,-10}", "Nome", "Data de Nascimento", "CPF", "Altura(cm)", "Peso(Kg)");
         Console.WriteLine(new string('=', 100));
 
         foreach (var cliente in clientes)
         {
-            Console.WriteLine("{0,-35} {1,-20} {2,-20} {3,-20} {4,-15}", cliente.Nome, cliente.DataNascimento.ToString("dd/MM/yyyy"), cliente.CPF, cliente.AlturaCm, cliente.PesoKg);
+            Console.WriteLine("{0,-35} {1,-20} {2,-20} {3,-12} {4,-10}", cliente.Nome, cliente.DataNascimento.ToString("dd/MM/yyyy"), cliente.CPF, cliente.AlturaCm, cliente.PesoKg);
+            Console.WriteLine(new string('.', 100));
         }
-        Console.WriteLine(new string('.', 100));
     }
 
 
@@ -274,7 +273,7 @@ public class GestaoDaAcademia
 
             Cliente? cliente = clientes.Find(c => c.Nome == nomeCliente);
 
-            Console.Write("Digite a nota da avaliação (entre 0 e 10): ");
+            Console.Write("Digite a nota para avaliação do treino (entre 0 e 10): ");
             if (int.TryParse(Console.ReadLine(), out int nota) && nota >= 0 && nota <= 10)
             {
                 // Adicionar a avaliação à lista de avaliações do treino
@@ -361,7 +360,7 @@ public class GestaoDaAcademia
 
     public static void AdicionarExerciciosAoTreino(Treino treino)
     {
-        while (true)
+        while (treino.ListaExercicios.Count < treino.LimiteExercicios)
         {
             Console.WriteLine("Adicionar Exercício ao Treino:");
             Exercicio exercicio = new Exercicio();
@@ -381,13 +380,19 @@ public class GestaoDaAcademia
             // Adicionar o exercício ao treino
             AdicionarExercicioAoTreino(treino, exercicio);
 
+            Console.WriteLine(new string('=', 80));
             Console.Write("Deseja adicionar outro exercício? (S/N): ");
             string? resposta = Console.ReadLine();
 
-            if (resposta.ToUpper() != "S")
+            if (resposta?.ToUpper() != "S")
             {
                 break;
             }
+        }
+
+        if (treino.ListaExercicios.Count >= treino.LimiteExercicios)
+        {
+            Console.WriteLine($"Limite de {treino.LimiteExercicios} exercícios atingido para o treino '{treino.Tipo}'.");
         }
     }
 
@@ -402,271 +407,4 @@ public class GestaoDaAcademia
 
         Console.WriteLine($"Exercício adicionado ao treino '{treino.Tipo}'.");
     }
-
-    // public static void SalvarDados()
-    // {
-    //     SalvarTreinadores();
-    //     SalvarClientes();
-    //     SalvarTreinos();
-    //     SalvarExercicios();
-    //     SalvarAvaliacoes();
-    // }
-
-    // public static void CarregarDados()
-    // {
-    //     CarregarTreinadores();
-    //     CarregarClientes();
-    //     CarregarTreinos();
-    //     CarregarExercicios();
-    //     CarregarAvaliacoes();
-    // }
-
-    // private static void SalvarTreinadores()
-    // {
-    //     string filePath = "treinadores.txt";
-
-    //     using (StreamWriter writer = new StreamWriter(filePath))
-    //     {
-    //         foreach (var treinador in treinadores)
-    //         {
-    //             writer.WriteLine($"{treinador.Nome},{treinador.DataNascimento},{treinador.CPF},{treinador.CREF}");
-    //         }
-    //     }
-    // }
-
-    // private static void CarregarTreinadores()
-    // {
-    //     string filePath = "treinadores.txt";
-
-    //     if (File.Exists(filePath))
-    //     {
-    //         treinadores.Clear();
-
-    //         using (StreamReader reader = new StreamReader(filePath))
-    //         {
-    //             string line;
-    //             while ((line = reader.ReadLine()) != null)
-    //             {
-    //                 string[] parts = line.Split(',');
-    //                 if (parts.Length == 4)
-    //                 {
-    //                     Treinador treinador = new Treinador
-    //                     {
-    //                         Nome = parts[0],
-    //                         DataNascimento = DateTime.Parse(parts[1]),
-    //                         CPF = parts[2],
-    //                         CREF = parts[3]
-    //                     };
-    //                     treinadores.Add(treinador);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // private static void SalvarClientes()
-    // {
-    //     string filePath = "clientes.txt";
-
-    //     using (StreamWriter writer = new StreamWriter(filePath))
-    //     {
-    //         foreach (var cliente in clientes)
-    //         {
-    //             writer.WriteLine($"{cliente.Nome},{cliente.DataNascimento},{cliente.CPF},{cliente.AlturaCm},{cliente.PesoKg}");
-    //         }
-    //     }
-    // }
-
-    // private static void CarregarClientes()
-    // {
-    //     string filePath = "clientes.txt";
-
-    //     if (File.Exists(filePath))
-    //     {
-    //         clientes.Clear();
-
-    //         using (StreamReader reader = new StreamReader(filePath))
-    //         {
-    //             string line;
-    //             while ((line = reader.ReadLine()) != null)
-    //             {
-    //                 string[] parts = line.Split(',');
-    //                 if (parts.Length == 5)
-    //                 {
-    //                     Cliente cliente = new Cliente
-    //                     {
-    //                         Nome = parts[0],
-    //                         DataNascimento = DateTime.Parse(parts[1]),
-    //                         CPF = parts[2],
-    //                         AlturaCm = int.Parse(parts[3]),
-    //                         PesoKg = int.Parse(parts[4])
-    //                     };
-    //                     clientes.Add(cliente);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-
-    // private static void SalvarTreinos()
-    // {
-    //     string filePath = "treinos.txt";
-
-    //     using (StreamWriter writer = new StreamWriter(filePath))
-    //     {
-    //         foreach (var treino in treinos)
-    //         {
-    //             // Escrever os dados do treino no formato desejado
-    //             writer.WriteLine($"{treino.Tipo},{treino.Objetivo},{treino.DuracaoEstimadaMinutos},{treino.DataInicio},{treino.VencimentoDias},{treino.TreinadorResponsavel.Nome}");
-    //         }
-    //     }
-    // }
-
-    // private static void CarregarTreinos()
-    // {
-    //     string filePath = "treinos.txt";
-
-    //     if (File.Exists(filePath))
-    //     {
-    //         treinos.Clear();
-
-    //         using (StreamReader reader = new StreamReader(filePath))
-    //         {
-    //             string line;
-    //             while ((line = reader.ReadLine()) != null)
-    //             {
-    //                 string[] parts = line.Split(',');
-    //                 if (parts.Length == 6)
-    //                 {
-    //                     Treino treino = new Treino
-    //                     {
-    //                         Tipo = parts[0],
-    //                         Objetivo = parts[1],
-    //                         DuracaoEstimadaMinutos = int.Parse(parts[2]),
-    //                         DataInicio = DateTime.Parse(parts[3]),
-    //                         VencimentoDias = int.Parse(parts[4]),
-    //                         TreinadorResponsavel = treinadores.Find(t => t.Nome == parts[5])
-    //                     };
-    //                     treinos.Add(treino);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // private static void SalvarExercicios()
-    // {
-    //     string filePath = "exercicios.txt";
-
-    //     using (StreamWriter writer = new StreamWriter(filePath))
-    //     {
-    //         foreach (var treino in treinos)
-    //         {
-    //             if (treino.ListaExercicios != null)
-    //             {
-    //                 foreach (var exercicio in treino.ListaExercicios)
-    //                 {
-    //                     // Escrever os dados do exercício no formato desejado
-    //                     writer.WriteLine($"{treino.Tipo},{exercicio.GrupoMuscular},{exercicio.Series},{exercicio.Repeticoes},{exercicio.TempoIntervaloSegundos}");
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // private static void CarregarExercicios()
-    // {
-    //     string filePath = "exercicios.txt";
-
-    //     if (File.Exists(filePath))
-    //     {
-    //         foreach (var treino in treinos)
-    //         {
-    //             treino.ListaExercicios = new List<Exercicio>();
-    //         }
-
-    //         using (StreamReader reader = new StreamReader(filePath))
-    //         {
-    //             string line;
-    //             while ((line = reader.ReadLine()) != null)
-    //             {
-    //                 string[] parts = line.Split(',');
-    //                 if (parts.Length == 5)
-    //                 {
-    //                     Exercicio exercicio = new Exercicio
-    //                     {
-    //                         GrupoMuscular = parts[1],
-    //                         Series = int.Parse(parts[2]),
-    //                         Repeticoes = int.Parse(parts[3]),
-    //                         TempoIntervaloSegundos = int.Parse(parts[4])
-    //                     };
-
-    //                     // Encontrar o treino associado ao exercício
-    //                     Treino treino = treinos.Find(t => t.Tipo == parts[0]);
-    //                     if (treino != null)
-    //                     {
-    //                         treino.ListaExercicios.Add(exercicio);
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // private static void SalvarAvaliacoes()
-    // {
-    //     string filePath = "avaliacoes.txt";
-
-    //     using (StreamWriter writer = new StreamWriter(filePath))
-    //     {
-    //         foreach (var treino in treinos)
-    //         {
-    //             if (treino.Avaliacoes != null)
-    //             {
-    //                 foreach (var avaliacao in treino.Avaliacoes)
-    //                 {
-    //                     // Escrever os dados da avaliação no formato desejado
-    //                     writer.WriteLine($"{treino.Tipo},{avaliacao.Cliente.Nome},{avaliacao.Nota}");
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // private static void CarregarAvaliacoes()
-    // {
-    //     string filePath = "avaliacoes.txt";
-
-    //     if (File.Exists(filePath))
-    //     {
-    //         foreach (var treino in treinos)
-    //         {
-    //             treino.Avaliacoes = new List<Avaliacao>();
-    //         }
-
-    //         using (StreamReader reader = new StreamReader(filePath))
-    //         {
-    //             string line;
-    //             while ((line = reader.ReadLine()) != null)
-    //             {
-    //                 string[] parts = line.Split(',');
-    //                 if (parts.Length == 3)
-    //                 {
-    //                     // Encontrar o treino associado à avaliação
-    //                     Treino treino = treinos.Find(t => t.Tipo == parts[0]);
-    //                     if (treino != null)
-    //                     {
-    //                         Cliente cliente = clientes.Find(c => c.Nome == parts[1]);
-    //                         if (cliente != null)
-    //                         {
-    //                             int nota = int.Parse(parts[2]);
-    //                             treino.Avaliacoes.Add(new Avaliacao(cliente, nota));
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
 }
