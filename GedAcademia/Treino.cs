@@ -11,7 +11,10 @@ public class Treino
     public Treinador TreinadorResponsavel { get; set; }
     public List<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
     public int LimiteExercicios { get; set; } = 10;
-
+    public Treino()
+    {
+        DataInicio = DateTime.Now; // ou outra lógica para definir a data inicial
+    }
 }
 
 

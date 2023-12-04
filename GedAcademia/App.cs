@@ -45,10 +45,9 @@ public class GestaoDaAcademia
             // Remover caracteres não numéricos do CPF
             cpfTreinador = new string(cpfInput.Where(char.IsDigit).ToArray());
 
-            // Validar o CPF
+            // Valida o CPF
             if (Pessoa.ValidarCPF(cpfTreinador))
             {
-                // CPF válido, sair do loop
                 break;
             }
             else
@@ -427,7 +426,6 @@ public class GestaoDaAcademia
             return;
         }
 
-        // Obtém a data atual
         DateTime dataAtual = DateTime.Now;
 
         // Filtra os clientes com idade entre os valores fornecidos
@@ -444,19 +442,17 @@ public class GestaoDaAcademia
             return idade >= idadeMinima && idade <= idadeMaxima;
         });
 
-        // Print column headers with fixed width
-        Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", "Nome", "Data de Nascimento", "CPF", "CREF");
-
-        // Print a line of equal signs as a separator
-        Console.WriteLine(new string('=', 103));
-
+        Console.WriteLine();
         Console.WriteLine($"Treinadores com idade entre {idadeMinima} e {idadeMaxima} anos:");
+
+        Console.WriteLine();
+        Console.WriteLine("{0,-30} {1,-20} {2,-20} {3,-20}", "Nome", "Data de Nascimento", "CPF", "CREF");
+        Console.WriteLine(new string('=', 100));
 
         foreach (var treinadores in treinadorEntreMinMax)
         {
-            // Print information about each cliente with fixed width
-            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", treinadores.Nome, treinadores.DataNascimento.ToString("dd/MM/yyyy"), treinadores.CPF, treinadores.CREF);
-            Console.WriteLine(new string('.', 103));
+            Console.WriteLine("{0,-30} {1,-20} {2,-20} {3,-20}", treinadores.Nome, treinadores.DataNascimento.ToString("dd/MM/yyyy"), treinadores.CPF, treinadores.CREF);
+            Console.WriteLine(new string('.', 100));
         }
     }
 
@@ -478,7 +474,6 @@ public class GestaoDaAcademia
             return;
         }
 
-        // Obtém a data atual
         DateTime dataAtual = DateTime.Now;
 
         // Filtra os clientes com idade entre os valores fornecidos
@@ -495,17 +490,15 @@ public class GestaoDaAcademia
             return idade >= idadeMinima && idade <= idadeMaxima;
         });
 
-        // Print column headers with fixed width
-        Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", "Nome", "Data de Nascimento", "CPF", "Altura", "Peso");
-
-        // Print a line of equal signs as a separator
-        Console.WriteLine(new string('=', 103));
-
+        Console.WriteLine();
         Console.WriteLine($"Clientes com idade entre {idadeMinima} e {idadeMaxima} anos:");
+
+        Console.WriteLine();
+        Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", "Nome", "Data de Nascimento", "CPF", "Altura", "Peso");
+        Console.WriteLine(new string('=', 103));
 
         foreach (var cliente in clientesEntreMinMax)
         {
-            // Print information about each cliente with fixed width
             Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", cliente.Nome, cliente.DataNascimento.ToString("dd/MM/yyyy"), cliente.CPF, cliente.AlturaCm, cliente.PesoKg);
             Console.WriteLine(new string('.', 103));
         }
@@ -524,8 +517,8 @@ public class GestaoDaAcademia
 
     public static void RelatorioClientesIMC()
     {
-        // Solicitar ao usuário o valor mínimo de IMC
-        Console.Write("Digite o valor mínimo de IMC: ");
+        Console.Write("Digite o valor mínimo de IMC (Ex.: 1,85): ");
+
         if (double.TryParse(Console.ReadLine(), out double valorMinimoIMC))
         {
             // Filtrar clientes com IMC maior que o valor mínimo
@@ -533,19 +526,16 @@ public class GestaoDaAcademia
                 .Where(cliente => CalcularIMC(cliente) > valorMinimoIMC)
                 .OrderBy(cliente => CalcularIMC(cliente));
 
-            // Imprimir cabeçalho
+            Console.WriteLine();
+            Console.WriteLine($"Clientes com IMC maior que {valorMinimoIMC}:");            
+            Console.WriteLine();
             Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", "Nome", "Data de Nascimento", "Altura", "Peso", "IMC");
-
-            // Imprimir linha de separação
             Console.WriteLine(new string('=', 103));
-
-            // Imprimir lista de clientes filtrados
-            Console.WriteLine($"Clientes com IMC maior que {valorMinimoIMC}:");
 
             foreach (var cliente in clientesFiltrados)
             {
                 Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}", cliente.Nome, cliente.DataNascimento.ToString("dd/MM/yyyy"), cliente.AlturaCm, cliente.PesoKg, CalcularIMC(cliente).ToString("F4"));
-                Console.WriteLine(new string('.', 103));
+                Console.WriteLine(new string('-', 103));
             }
         }
         else
@@ -555,15 +545,215 @@ public class GestaoDaAcademia
     }
 
     public static void RelClientesOrdemAlfabetica()
+    {
+        Console.WriteLine("\nClientes Cadastrados em Ordem Alfabética:");
+        Console.WriteLine();
+
+        var clientesOrdenados = GestaoDaAcademia.clientes.OrderBy(cliente => cliente.Nome);
+
+        Console.WriteLine("{0,-30} {1,-20}", "Nome", "CPF");
+        Console.WriteLine(new string('=', 55));
+
+        foreach (var cliente in clientesOrdenados)
         {
-            Console.WriteLine("\nClientes Cadastrados em Ordem Alfabética:");
+            Console.WriteLine("{0,-30} {1,-20}", cliente.Nome, cliente.CPF);
+            Console.WriteLine(new string('-', 55));
+        }
+    }
 
-            var clientesOrdenados = GestaoDaAcademia.clientes.OrderBy(cliente => cliente.Nome);
 
-            foreach (var cliente in clientesOrdenados)
+    public static void RelIdadeClientesOrdenados()
+    {
+        // Ordenar os clientes do mais velho para o mais novo
+        var clientesOrdenados = clientes.OrderByDescending(cliente => cliente.DataNascimento);
+
+        Console.WriteLine($"Clientes ordenados do mais velho para o mais novo:");
+        Console.WriteLine();
+        Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", "Nome", "Data de Nascimento", "Altura", "Peso");
+        Console.WriteLine(new string('=', 83));
+
+        foreach (var cliente in clientesOrdenados)
+        {
+            Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20}", cliente.Nome, cliente.DataNascimento.ToString("dd/MM/yyyy"), cliente.AlturaCm, cliente.PesoKg);
+            Console.WriteLine(new string('-', 83));
+        }
+    }
+
+    private static void ExibirAniversariantes(IEnumerable<Pessoa> aniversariantes, string tipo)
+    {
+        foreach (var pessoa in aniversariantes)
+        {
+            Console.WriteLine("{0,-20} {1,-20} {2,-20}", pessoa.Nome, pessoa.DataNascimento.ToString("dd/MM/yyyy"), tipo);
+        }
+    }
+
+    public static void RelAniversariantesPorMes()
+    {
+        Console.Write("Digite o mês desejado (1 a 12): ");
+        Console.WriteLine();
+
+        if (int.TryParse(Console.ReadLine(), out int mesEscolhido) && mesEscolhido >= 1 && mesEscolhido <= 12)
+        {
+            DateTime dataAtual = DateTime.Now;
+
+            var treinadoresAniversariantes = treinadores
+                .Where(treinador => treinador.DataNascimento.Month == mesEscolhido)
+                .OrderBy(treinador => treinador.DataNascimento.Day);
+
+            var clientesAniversariantes = clientes
+                .Where(cliente => cliente.DataNascimento.Month == mesEscolhido)
+                .OrderBy(cliente => cliente.DataNascimento.Day);
+
+            // Imprimir apenas se houver aniversariantes
+            if (treinadoresAniversariantes.Any() || clientesAniversariantes.Any())
             {
-                Console.WriteLine($"Nome: {cliente.Nome}, CPF: {cliente.CPF}, Data de Nascimento: {cliente.DataNascimento}, Altura: {cliente.AlturaCm}, Peso: {cliente.PesoKg}");
+                // Print column headers with fixed width
+                Console.WriteLine($"Aniversariantes do mês {mesEscolhido}:");
+                Console.WriteLine();
+                Console.WriteLine("{0,-20} {1,-20} {2,-20}", "Nome", "Data de Nascimento", "Tipo");
+                Console.WriteLine(new string('=', 63));
+
+                foreach (var treinador in treinadoresAniversariantes)
+                {
+                    Console.WriteLine("{0,-20} {1,-20} {2,-20}", treinador.Nome, treinador.DataNascimento.ToString("dd/MM/yyyy"), "Treinador");
+                    Console.WriteLine(new string('-', 63));
+
+                }
+
+                foreach (var cliente in clientesAniversariantes)
+                {
+                    Console.WriteLine("{0,-20} {1,-20} {2,-20}", cliente.Nome, cliente.DataNascimento.ToString("dd/MM/yyyy"), "Cliente");
+                    Console.WriteLine(new string('-', 63));
+
+                }
+
+                Console.WriteLine(); 
+            }
+            else
+            {
+                Console.WriteLine("Não há aniversariantes para o mês informado.");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Mês inválido.");
+        }
+        Console.WriteLine();
+    }
+
+    public static void RelTreinosPorQuantVencOrdem()
+    {
+        // Ordenar os treinos pela quantidade de dias até o vencimento (em ordem crescente)
+        var treinosOrdenados = treinos.OrderBy(treino => (treino.DataInicio.AddDays(treino.VencimentoDias) - DateTime.Now).Days);
+
+        Console.WriteLine($"Treinos em ordem crescente pela quantidade de dias até o vencimento:");
+        Console.WriteLine();
+        Console.WriteLine("{0,-25} {1,-25} {2,-20} {3,-20} {4,-20} {5,-30} {6,-20}", "Tipo", "Objetivo", "Duração (min)", "Data Início", "Vencimento (dias)", "Treinador", "Qtd. Exercícios");
+        Console.WriteLine(new string('=', 170));
+
+        foreach (var treino in treinosOrdenados)
+        {
+            Console.WriteLine("{0,-25} {1,-25} {2,-20} {3,-20} {4,-20} {5,-30} {6,-20}",
+                treino.Tipo, treino.Objetivo, treino.DuracaoEstimadaMinutos, treino.DataInicio.ToString("dd/MM/yyyy"),
+                treino.VencimentoDias, treino.TreinadorResponsavel.Nome, treino.ListaExercicios?.Count ?? 0);
+            Console.WriteLine(new string('-', 170));
+        }
+        Console.WriteLine();
+    }
+
+    public static void RelMediaNotasTreinadores()
+    {
+        List<(Treinador Treinador, double Media)> mediasTreinadores = new List<(Treinador, double)>();
+
+        foreach (var treinador in treinadores)
+        {
+            // Filtra os treinos associados a esse treinador
+            var treinosTreinador = treinos.Where(treino => treino.TreinadorResponsavel == treinador);
+
+            // Verifica se há treinos associados e avaliações não nulas
+            if (treinosTreinador.Any() && treinosTreinador.SelectMany(treino => treino.Avaliacoes).Any())
+            {
+                // Calcula a média de notas dos treinos desse treinador
+                double mediaNotas = treinosTreinador.SelectMany(treino => treino.Avaliacoes).Average(avaliacao => avaliacao.Nota);
+
+                mediasTreinadores.Add((treinador, mediaNotas));
+            }
+            else
+            {
+                // Se não há avaliações, adiciona o treinador com média zero
+                mediasTreinadores.Add((treinador, 0.0));
             }
         }
 
+        var treinadoresOrdenados = mediasTreinadores.OrderByDescending(item => item.Media);
+
+        Console.WriteLine("{0,-30} {1,-20} {2,-20}", "Nome do Treinador", "CREF", "Média de Notas");
+        Console.WriteLine(new string('=', 75));
+
+        foreach (var (treinador, media) in treinadoresOrdenados)
+        {
+            Console.WriteLine("{0,-30} {1,-20} {2,-20:F2}", treinador.Nome, treinador.CREF, media);
+            Console.WriteLine(new string('.', 75));
+        }
+    }
+
+    public static void RelTreinosPorObjPalavra()
+    {
+        Console.Write("Digite a palavra-chave do objetivo do treino: ");
+        string? palavraChave = Console.ReadLine();
+
+        while (true)
+        {
+            // Filtra os treinos cujo objetivo contenha a palavra-chave
+            var treinosFiltrados = treinos.Where(treino => treino.Objetivo.Contains(palavraChave, StringComparison.OrdinalIgnoreCase));
+
+            if (treinosFiltrados.Any())
+            {
+                Console.WriteLine($"Treinos com objetivo contendo '{palavraChave}':");
+                Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20} {5,-20} {6,-20}", "Tipo", "Objetivo", "Duração (min)", "Data Início", "Vencimento (dias)", "Treinador", "Qtd. Exercícios");
+
+                Console.WriteLine(new string('=', 143));
+
+                foreach (var treino in treinosFiltrados)
+                {
+                    Console.WriteLine("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20} {5,-20} {6,-20}",
+                        treino.Tipo, treino.Objetivo, treino.DuracaoEstimadaMinutos, treino.DataInicio.ToString("dd/MM/yyyy"),
+                        treino.VencimentoDias, treino.TreinadorResponsavel.Nome, treino.ListaExercicios?.Count ?? 0);
+                    Console.WriteLine(new string('-', 143));
+                }
+
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Nenhum treino encontrado com objetivo contendo '{palavraChave}'.");
+                Console.Write("Digite novamente a palavra-chave do objetivo do treino: ");
+                palavraChave = Console.ReadLine();
+            }
+        }
+    }
+
+    public static void RelTop10ExerMaisUtilizados()
+    {
+        // Agrupa todos os exercícios de todos os treinos
+        var todosExercicios = treinos.SelectMany(treino => treino.ListaExercicios);
+
+        // Agrupa os exercícios pelo nome do grupo muscular
+        var exerciciosAgrupados = todosExercicios.GroupBy(exercicio => exercicio.GrupoMuscular);
+
+        // Calcula a contagem de cada grupo muscular e ordena pelo número de ocorrências (maior para menor)
+        var topExercicios = exerciciosAgrupados.OrderByDescending(group => group.Count()).Take(10);
+
+        // Exibe os Top 10 exercícios mais utilizados
+        Console.WriteLine("Top 10 Exercícios Mais Utilizados:");
+        Console.WriteLine();
+        Console.WriteLine("{0,-25} {1,-10}", "Grupo Muscular", "Quantidade");
+        Console.WriteLine(new string('=', 40));
+
+        foreach (var grupoMuscular in topExercicios)
+        {
+            Console.WriteLine("{0,-25} {1,-10}", grupoMuscular.Key, grupoMuscular.Count());
+            Console.WriteLine(new string('-', 40));
+        }
+    }
 }
