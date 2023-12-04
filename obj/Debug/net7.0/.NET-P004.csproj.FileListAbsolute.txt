@@ -1,0 +1,5 @@
+D:\.NET-P004\obj\Debug\net7.0\.NET-P004.GeneratedMSBuildEditorConfig.editorconfig
+D:\.NET-P004\obj\Debug\net7.0\.NET-P004.AssemblyInfoInputs.cache
+D:\.NET-P004\obj\Debug\net7.0\.NET-P004.AssemblyInfo.cs
+D:\.NET-P004\obj\Debug\net7.0\.NET-P004.csproj.CoreCompileInputs.cache
+D:\.NET-P004\obj\Debug\net7.0\.NET-P004.sourcelink.json
