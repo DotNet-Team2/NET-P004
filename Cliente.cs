@@ -4,6 +4,7 @@ public class Cliente : Pessoa
 {
     private int altura;
     private int peso;
+    public static List<Treino> treinosCliente = new List<Treino>();
 
     public Cliente(string nome, DateTime dataNascimento, string cpf, int altura, int peso)
             : base(nome, dataNascimento, cpf)
@@ -36,16 +37,30 @@ public class Cliente : Pessoa
         peso = novoPeso;
     }
 
+    public static List<Treino> TreinosCliente
+    {
+        get { return treinosCliente; }
+        set { treinosCliente = value; }
+    }
+
     public int Idade()
     {
         int idade = DateTime.Today.Year - this.GetDataNascimento().Year;
 
-        if (this.GetDataNascimento()> DateTime.Today.AddYears(-idade))
+        if (this.GetDataNascimento() > DateTime.Today.AddYears(-idade))
         {
             idade--;
         }
 
         return idade;
+    }
+
+    public int getTamanhoListTreino(){
+        return treinosCliente.Count;
+    }
+
+    public void setLitTreinos(Treino treino){
+        treinosCliente.Add(treino);
     }
 
     public double IMC()

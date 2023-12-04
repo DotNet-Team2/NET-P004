@@ -9,7 +9,7 @@ public class Treino
     private int vencimento;
     private Treinador treinador;
 
-    public Treino(string tipo, string objetivo, int duracao, DateTime dataInicio, int vencimento, Treinador treinador)
+    public Treino(string tipo, string objetivo, List<Exercicios> exercicios, int duracao, DateTime dataInicio, int vencimento, Treinador treinador)
         {
             this.tipo = tipo;
             this.objetivo = objetivo;
