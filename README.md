@@ -2,7 +2,7 @@
 
 - MÓDULO .NB – Formação .Net - Básico
 - Atividade Prática NET-P004 (SISTEMA DE GESTÃO DE ACADEMIA)
-
+- Atividade em sala de aula
 
 ### | Repositório para a disciplina de .NET. 
 
