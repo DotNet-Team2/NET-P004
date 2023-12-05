@@ -10,7 +10,7 @@ class Program
     static List<Treino> treinos = new List<Treino>();
 
     static void Main()
-    {
+    {// Adiciona clientes aniversariantes
         bool exit = false;
         while (!exit)
         {
@@ -91,9 +91,6 @@ class Program
 
         Console.Write("Digite o CPF do cliente: ");
         string cpfCliente = Console.ReadLine();
-
-        Console.Write("Digite a altura do cliente em cm: ");
-        double alturaCliente = double.Parse(Console.ReadLine());
 
         Console.Write("Digite o peso do cliente em kg: ");
         double pesoCliente = double.Parse(Console.ReadLine());
@@ -349,10 +346,10 @@ class Program
         {
             List<Pessoa> aniversariantes = new List<Pessoa>();
 
-            // Adiciona treinadores aniversariantes
+            
             aniversariantes.AddRange(treinadores.Where(t => t.DataNascimento.Month == mesInformado));
 
-            // Adiciona clientes aniversariantes
+            
             aniversariantes.AddRange(clientes.Where(c => c.DataNascimento.Month == mesInformado));
 
             return aniversariantes;

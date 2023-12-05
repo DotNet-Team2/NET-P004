@@ -13,9 +13,7 @@ public class Pessoa
 
     public string TratarCPF(string input)
     {
-        // Implement your logic for CPF validation and formatting here
-        // For example, check if the input has 11 digits
-        // Format it as needed
+        // Implemetar aqui a logica para validação
         
         return input;
     }
@@ -31,9 +29,7 @@ public class Treinador : Pessoa
     }
     public string TratarCREF(string input)
     {
-        // Implement your logic for CPF validation and formatting here
-        // For example, check if the input has 11 digits
-        // Format it as needed
+        // Implmentar aqui a lógica para validação
         
         return input;
     }
