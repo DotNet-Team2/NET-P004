@@ -8,6 +8,7 @@ public class GestaoDaAcademia
     public static List<Treino> treinos = new List<Treino>();
     public List<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
     private static List<string> crefsUtilizados = new List<string>();
+    /* List */
 
     private static bool CREFUnico(string cref)
     {
