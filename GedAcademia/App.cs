@@ -8,6 +8,7 @@ public class GestaoDaAcademia
     public static List<Treino> treinos = new List<Treino>();
     public List<Avaliacao> Avaliacoes { get; set; } = new List<Avaliacao>();
     private static List<string> crefsUtilizados = new List<string>();
+    public static List<Plano> planos = new List<Plano>();
 
     private static bool CREFUnico(string cref)
     {
@@ -87,6 +88,46 @@ public class GestaoDaAcademia
             Console.WriteLine($"Ocorreu um erro: {ex.Message}");
         }
 
+    }
+
+    public static void AdicionarPlano(){
+        string nomePlano;
+
+
+        Console.WriteLine("Informe o nome do plano: ");
+        nomePlano =  Console.ReadLine();
+
+        Console.WriteLine("Informe o valor do plano: ");
+        try
+        {
+            // Lê a entrada do teclado como uma string
+            string input = Console.ReadLine();
+
+            // Tenta converter a string para double
+            if (double.TryParse(input, out double valorMes))
+            {
+                // A conversão foi bem-sucedida, 'valor' agora contém o valor double
+                Console.WriteLine($"Você digitou: {valorMes}");
+                Plano plano = new Plano(nomePlano, valorMes);
+                planos.Add(plano);
+            }
+            else
+            {
+                // A entrada do usuário não é um número double válido
+                throw new FormatException("Entrada inválida. Certifique-se de digitar um número decimal.");
+            }
+        }
+        catch (FormatException ex)
+        {
+            // Captura a exceção se a entrada não puder ser convertida para double
+            Console.WriteLine($"Erro: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            // Captura outras exceções que podem ocorrer
+            Console.WriteLine($"Erro inesperado: {ex.Message}");
+        }
+        
     }
 
     public static void AdicionarCliente()
@@ -190,7 +231,13 @@ public class GestaoDaAcademia
         }
     }
 
-
+    public static void ListarPlanos(){
+        foreach(var plano in planos){
+            Console.WriteLine($"Plano: {plano.getTitulo()}");
+            Console.WriteLine($"Valor: {plano.getValorPorMes():F2}");
+            Console.WriteLine("------------------------------------");
+        }
+    }
 
     public static void CriarTreino()
     {
