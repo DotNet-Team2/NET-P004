@@ -106,6 +106,7 @@ public class Program
                     case 11:
                         Console.WriteLine();
                         //GestaoDaAcademia.RelIdadeEntreMinMaxClientes();
+                        GestaoDaAcademia.RealizarPagamentoCliente();
                         Console.WriteLine();
                         break;
 

@@ -811,4 +811,46 @@ public class GestaoDaAcademia
             Console.WriteLine(new string('-', 40));
         }
     }
+
+
+    public static void RealizarPagamentoCliente(){
+         // Solicitar informações do cliente e nota
+            Console.Write("Digite o nome do cliente para realizar o pagametno: ");
+            string? nomeCliente = Console.ReadLine();
+
+            Cliente? cliente = clientes.Find(c => c.Nome == nomeCliente);
+
+
+        Console.WriteLine("informe o metodo de pagamento: ");
+        Console.WriteLine("[1] Cartao de Credito ");
+        Console.WriteLine("[2] PIX");
+        int op = Int32.Parse(Console.ReadLine());
+
+        if(op == 1){
+            double valor = cliente.planoAtivo.ValorPorMes;
+            Console.WriteLine($"Valor do pagamento: {valor} ");
+
+            Console.WriteLine("Informe a chave pix: ");
+            string? chave = Console.ReadLine();
+
+            PagPix pix = new PagPix();
+            pix.NumeroChave = chave;
+
+            pix.RealizarPagamento(valor);
+        }else{
+            double valor = cliente.planoAtivo.ValorPorMes;
+            Console.WriteLine($"Valor do pagamento: {valor:F2} ");
+
+            Console.WriteLine("Informe o numero do cartao: ");
+            string? chave = Console.ReadLine();
+
+            PagCartao card = new PagCartao();
+            card.NumeroCartao = chave;
+
+            card.RealizarPagamento(valor);
+        }
+        
+    }
+
+    
 }
