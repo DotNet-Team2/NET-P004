@@ -21,16 +21,19 @@ public class Program
             Console.WriteLine("7.  CRIAR TREINO ");
             Console.WriteLine("8.  REALIZAR AVALIAÇÃO");
             Console.WriteLine("9.  EXIBIR DETALHES DO TREINO");
-            Console.WriteLine("10.  RELATÓRIOS DA IDADE DOS TREINADORES ENTRE DOIS VALORES");
-            Console.WriteLine("11.  RELATÓRIOS DA IDADE DOS CLIENTES ENTRE DOIS VALORES");
-            Console.WriteLine("12. RELATÓRIO DO IMC DOS CLIENTES EM ORDEM CRESCENTE");
-            Console.WriteLine("13. RELATÓRIO DOS CLIENTES EM ORDEM ALFABÉTICA");
-            Console.WriteLine("14. RELATÓRIO DOS CLIENTES MAIS VELHOS PARA O MAIS NOVO");
-            Console.WriteLine("15. RELATÓRIO DOS TREINADORES E CLIENTES ANIVERSARIANTES DO MÊS INFORMADO");
-            Console.WriteLine("16. RELATÓRIO DOS TREINOS EM ORDEM CRESCENTE PELA QUANTIDADE DE DIAS ATÉ O VENCIMENTO");
-            Console.WriteLine("17. RELATÓRIO DOS TREINADORES EM ORDEM DECRESCENTE DA MÉDIA DE NOTAS DOS SEUS TREINOS");
-            Console.WriteLine("18. RELATÓRIO DOS TREINOS CUJO OBJETIVO CONTENHAM DETERMINADA PALAVRA");
-            Console.WriteLine("19. RELATÓRIO DO TOP 10 DOS EXERCÍCIOS MAIS UTILIZADOS NOS TREINOS.");
+            Console.WriteLine("10  PLANOS CADASTRADOS");
+            Console.WriteLine("11  PAGAMENTO");
+
+            Console.WriteLine("12. RELATÓRIOS DA IDADE DOS TREINADORES ENTRE DOIS VALORES");
+            Console.WriteLine("13. RELATÓRIOS DA IDADE DOS CLIENTES ENTRE DOIS VALORES");
+            Console.WriteLine("14. RELATÓRIO DO IMC DOS CLIENTES EM ORDEM CRESCENTE");
+            Console.WriteLine("15. RELATÓRIO DOS CLIENTES EM ORDEM ALFABÉTICA");
+            Console.WriteLine("16. RELATÓRIO DOS CLIENTES MAIS VELHOS PARA O MAIS NOVO");
+            Console.WriteLine("17. RELATÓRIO DOS TREINADORES E CLIENTES ANIVERSARIANTES DO MÊS INFORMADO");
+            Console.WriteLine("18. RELATÓRIO DOS TREINOS EM ORDEM CRESCENTE PELA QUANTIDADE DE DIAS ATÉ O VENCIMENTO");
+            Console.WriteLine("19. RELATÓRIO DOS TREINADORES EM ORDEM DECRESCENTE DA MÉDIA DE NOTAS DOS SEUS TREINOS");
+            Console.WriteLine("20. RELATÓRIO DOS TREINOS CUJO OBJETIVO CONTENHAM DETERMINADA PALAVRA");
+            Console.WriteLine("21. RELATÓRIO DO TOP 10 DOS EXERCÍCIOS MAIS UTILIZADOS NOS TREINOS.");
             Console.WriteLine("0. SAIR ");
             Console.WriteLine();
 
@@ -96,59 +99,71 @@ public class Program
 
                     case 10:
                         Console.WriteLine();
-                        GestaoDaAcademia.RelIdadeEntreMinMaxTreinador();
+                        //GestaoDaAcademia.RelIdadeEntreMinMaxTreinador();
                         Console.WriteLine();
                         break;
 
                     case 11:
                         Console.WriteLine();
-                        GestaoDaAcademia.RelIdadeEntreMinMaxClientes();
+                        //GestaoDaAcademia.RelIdadeEntreMinMaxClientes();
                         Console.WriteLine();
                         break;
 
                     case 12:
                         Console.WriteLine();
-                        GestaoDaAcademia.RelatorioClientesIMC();
+                        GestaoDaAcademia.RelIdadeEntreMinMaxTreinador();
                         Console.WriteLine();
                         break;
 
                     case 13:
                         Console.WriteLine();
-                        GestaoDaAcademia.RelClientesOrdemAlfabetica();
+                        GestaoDaAcademia.RelIdadeEntreMinMaxClientes();
                         Console.WriteLine();
                         break;
 
                     case 14:
                         Console.WriteLine();
-                        GestaoDaAcademia.RelIdadeClientesOrdenados();
+                        GestaoDaAcademia.RelatorioClientesIMC();
                         Console.WriteLine();
                         break;
 
                     case 15:
                         Console.WriteLine();
-                        GestaoDaAcademia.RelAniversariantesPorMes();
+                        GestaoDaAcademia.RelClientesOrdemAlfabetica();
                         Console.WriteLine();
                         break;
 
                     case 16:
                         Console.WriteLine();
-                        GestaoDaAcademia.RelTreinosPorQuantVencOrdem();
+                        GestaoDaAcademia.RelIdadeClientesOrdenados();
                         Console.WriteLine();
                         break;
 
                     case 17:
                         Console.WriteLine();
-                        GestaoDaAcademia.RelMediaNotasTreinadores();
+                        GestaoDaAcademia.RelAniversariantesPorMes();
                         Console.WriteLine();
                         break;
 
                     case 18:
                         Console.WriteLine();
-                        GestaoDaAcademia.RelTreinosPorObjPalavra();
+                        GestaoDaAcademia.RelTreinosPorQuantVencOrdem();
                         Console.WriteLine();
                         break;
 
                     case 19:
+                        Console.WriteLine();
+                        GestaoDaAcademia.RelMediaNotasTreinadores();
+                        Console.WriteLine();
+                        break;
+
+                    case 20:
+                        Console.WriteLine();
+                        GestaoDaAcademia.RelTreinosPorObjPalavra();
+                        Console.WriteLine();
+                        break;
+
+                    case 21:
                         Console.WriteLine();
                         GestaoDaAcademia.RelTop10ExerMaisUtilizados();
                         Console.WriteLine();
