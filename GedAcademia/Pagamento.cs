@@ -1,6 +1,6 @@
 public class Pagamento {
     
-    public string Descricao { get; set; }
+    public string? Descricao { get; set; }
 
     
     public double ValorBruto { get; set; }
