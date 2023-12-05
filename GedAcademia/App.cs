@@ -179,6 +179,10 @@ public class GestaoDaAcademia
         Console.Write("Digite o peso do cliente em kg: ");
         int pesoCliente = Int32.Parse(Console.ReadLine());
 
+        Console.Write("Escolha o seu plano: ");
+        ListarPlanos();
+        int escolha = Int32.Parse(Console.ReadLine());
+
         try
         {
             Cliente cliente = new Cliente
@@ -187,7 +191,8 @@ public class GestaoDaAcademia
                 DataNascimento = dataNascimento,
                 CPF = cpfCliente,
                 AlturaCm = alturaCliente,
-                PesoKg = pesoCliente
+                PesoKg = pesoCliente,
+                planoAtivo = planos[escolha]
             };
 
             clientes.Add(cliente);
@@ -232,10 +237,13 @@ public class GestaoDaAcademia
     }
 
     public static void ListarPlanos(){
+        int i=0;
         foreach(var plano in planos){
+            Console.WriteLine($"Id plano: {i}");
             Console.WriteLine($"Plano: {plano.getTitulo()}");
             Console.WriteLine($"Valor: {plano.getValorPorMes():F2}");
             Console.WriteLine("------------------------------------");
+            i++;
         }
     }
 
