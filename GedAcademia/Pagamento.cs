@@ -10,4 +10,9 @@ public class Pagamento {
 
     
     public DateTime DataHora { get; set; }
+
+    internal void EfetuarPagamento(double valorBruto)
+    {
+        throw new NotImplementedException();
+    }
 }
